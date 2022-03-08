@@ -9,7 +9,7 @@ import service.UserService;
 
 public class Login extends javax.swing.JFrame {
 
-    UserService userService;
+    UserService userService = null;
     User user = null;
 
     public Login() {

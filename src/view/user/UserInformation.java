@@ -10,7 +10,7 @@ import view.Login;
 
 public class UserInformation extends javax.swing.JFrame {
 
-    User user;
+    User user = null;
 
     public UserInformation(User user) {
 
@@ -170,15 +170,12 @@ public class UserInformation extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muôn đăng xuất không?", "Thông báo", JOptionPane.YES_NO_OPTION);
-        if (confirm == 0) {
-            try {
-                new HomePage(user).setVisible(true);
-                this.dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserInformation.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        try {            
+            new HomePage(user).setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }       
     }//GEN-LAST:event_backButtonActionPerformed
 
     public static void main(String args[]) {

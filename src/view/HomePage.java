@@ -7,13 +7,14 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
+import view.user.UserDrawMoney;
 import view.user.UserEditPassword;
 import view.user.UserInformation;
 
 public class HomePage extends javax.swing.JFrame {
 
-    private UserService userService;
-    User user;
+    private UserService userService = null;
+    User user = null;
 
     public HomePage(User user) throws SQLException {
 
@@ -76,6 +77,11 @@ public class HomePage extends javax.swing.JFrame {
 
         rutTienButton.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         rutTienButton.setText("Rút tiền");
+        rutTienButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rutTienButtonActionPerformed(evt);
+            }
+        });
 
         soDuTextField.setEditable(false);
         soDuTextField.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -162,6 +168,12 @@ public class HomePage extends javax.swing.JFrame {
         new UserEditPassword(user).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editPasswordButtonActionPerformed
+
+    private void rutTienButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rutTienButtonActionPerformed
+        // TODO add your handling code here:
+        new UserDrawMoney(user).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_rutTienButtonActionPerformed
 
     public static void main(String[] args) {
         new Login().setVisible(true);
