@@ -2,6 +2,7 @@ package service;
 
 import dao.UserDao;
 import java.sql.SQLException;
+import java.util.List;
 import model.User;
 
 public class UserService {
@@ -20,8 +21,12 @@ public class UserService {
         return userDao.editPassword(id, passwordOld, passwordNew, passwordConfirm);
     }
     
-    public User drawMoney(int id, int money) throws SQLException {
+    public int drawMoney(int id, int money) throws SQLException {
         return userDao.drawMoney(id, money);
+    }
+    
+    public List<User> getAllUser() throws SQLException {
+        return userDao.getAllUser();
     }
 
 //    public Card getCardByUserName(String userName) throws SQLException {

@@ -4,9 +4,12 @@ import view.*;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
+import view.admin.QLUser;
 import view.user.UserDrawMoney;
 import view.user.UserEditPassword;
 import view.user.UserInformation;
@@ -25,15 +28,19 @@ public class HomePage extends javax.swing.JFrame {
         //hiển thị tên
         if (user.getRole() == 2) {
             roleLabel.setText("Xin chào người dùng");
+            qlUserBT.setVisible(false);
         } else if (user.getRole() == 1) {
             roleLabel.setText("Xin chào quản trị");
+            rutTienButton.setVisible(false);
+            soDuTF.setVisible(false);
+            soDuL.setVisible(false);
         }
         nameLabel.setText(user.getName());
         //hiển thị số dư
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat vn = NumberFormat.getInstance(localeVN);
         String soDu = vn.format(user.getSoDu());
-        soDuTextField.setText(soDu + " VNĐ");
+        soDuTF.setText(soDu + " VNĐ");
     }
 
     @SuppressWarnings("unchecked")
@@ -42,12 +49,13 @@ public class HomePage extends javax.swing.JFrame {
 
         logoutButton = new javax.swing.JButton();
         roleLabel = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        soDuL = new javax.swing.JLabel();
         editPasswordButton = new javax.swing.JButton();
         rutTienButton = new javax.swing.JButton();
-        soDuTextField = new javax.swing.JTextField();
+        soDuTF = new javax.swing.JTextField();
         editPasswordButton1 = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
+        qlUserBT = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,11 +69,11 @@ public class HomePage extends javax.swing.JFrame {
 
         roleLabel.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         roleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        roleLabel.setText("Xin chào");
+        roleLabel.setText(" Xin chào quản trị");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Số dư hiện tại");
+        soDuL.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        soDuL.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        soDuL.setText("Số dư hiện tại");
 
         editPasswordButton.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         editPasswordButton.setText("Đổi mật khẩu");
@@ -83,9 +91,9 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
-        soDuTextField.setEditable(false);
-        soDuTextField.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        soDuTextField.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        soDuTF.setEditable(false);
+        soDuTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        soDuTF.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         editPasswordButton1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         editPasswordButton1.setText("Xem thông tin");
@@ -95,10 +103,18 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
-        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(255, 51, 51));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setText("name");
+        nameLabel.setText("Tus");
+
+        qlUserBT.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        qlUserBT.setText("Quản lí người dùng");
+        qlUserBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                qlUserBTActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,19 +124,22 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(roleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(soDuTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
+                    .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(logoutButton)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(editPasswordButton1)
-                        .addGap(29, 29, 29)
-                        .addComponent(editPasswordButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(soDuL, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(soDuTF))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(qlUserBT)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(editPasswordButton1)
+                                .addGap(31, 31, 31)
+                                .addComponent(editPasswordButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(rutTienButton)))
                 .addContainerGap())
         );
@@ -135,12 +154,14 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(nameLabel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(soDuTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(soDuTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(soDuL, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(qlUserBT, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rutTienButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editPasswordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rutTienButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editPasswordButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -175,18 +196,58 @@ public class HomePage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_rutTienButtonActionPerformed
 
-    public static void main(String[] args) {
-        new Login().setVisible(true);
+    private void qlUserBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qlUserBTActionPerformed
+        // TODO add your handling code here:
+        try {
+            new QLUser(user).setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_qlUserBTActionPerformed
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(QLUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(QLUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(QLUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(QLUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Login().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editPasswordButton;
     private javax.swing.JButton editPasswordButton1;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JButton logoutButton;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton qlUserBT;
     private javax.swing.JLabel roleLabel;
     private javax.swing.JButton rutTienButton;
-    private javax.swing.JTextField soDuTextField;
+    private javax.swing.JLabel soDuL;
+    private javax.swing.JTextField soDuTF;
     // End of variables declaration//GEN-END:variables
 }

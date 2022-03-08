@@ -88,6 +88,7 @@ public class UserDrawMoney extends javax.swing.JFrame {
 
         soTienRutTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         soTienRutTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        soTienRutTF.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,11 +163,12 @@ public class UserDrawMoney extends javax.swing.JFrame {
         } else {
             int money = user.getSoDu() - Integer.valueOf(soTienRutTF.getText());
             try {
-                this.user = userService.drawMoney(user.getId(), money);
-                if (user == null) {
+                int rs = userService.drawMoney(user.getId(), money);
+                if (rs != 1) {
                     JOptionPane.showMessageDialog(this, "Rút tiền không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Rút tiền thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
+                    user.setSoDu(money);
                 }
                 new HomePage(user).setVisible(true);
                 this.dispose();

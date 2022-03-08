@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -82,48 +84,42 @@ public class UserDao {
             return 2;
         }
     }
-    
-    public User drawMoney(int id, int money) throws SQLException {
-        
-        PreparedStatement preparedStatement;
-        String sql;
-        
+
+    public int drawMoney(int id, int money) throws SQLException {
         Connection con = Connect.getJDBCConection();
 
-        sql = "UPDATE user SET so_du = ? WHERE id_user = ?";
+        String sql = "UPDATE user SET so_du = ? WHERE id_user = ?";
 
-        preparedStatement = con.prepareStatement(sql);
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
 
         preparedStatement.setInt(1, money);
         preparedStatement.setInt(2, id);
 
         int rs = preparedStatement.executeUpdate();
 
-        if(rs == 1) {
-            //lấy lại thông tin user
-            sql = "SELECT * FROM user WHERE id_user = ?";
+        return rs;
+    }
 
-            preparedStatement = con.prepareStatement(sql);
+    public List<User> getAllUser() throws SQLException {
+        List<User> users = new ArrayList<User>();
 
-            preparedStatement.setInt(1, id);
+        Connection con = Connect.getJDBCConection();
 
-            ResultSet rs1 = preparedStatement.executeQuery();
+        String sql = "SELECT * FROM user WHERE role = 2";
 
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        while (rs.next()) {
             User user = new User();
-            rs1.next();
-            user.setId(rs1.getInt("id_user"));
-            user.setName(rs1.getString("name_user"));
-            user.setDoB(rs1.getString("DoB"));
-            user.setCmnd(rs1.getString("cmnd"));
-            user.setPhoneNumber(rs1.getString("phone_number"));
-            user.setAddress(rs1.getString("address"));
-            user.setRole(rs1.getInt("role"));
-            user.setStatus(rs1.getInt("status"));
-            user.setSoDu(rs1.getInt("so_du"));
-            return user;
-        } else {
-            return null;
+            user.setId(rs.getInt("id_user"));
+            user.setName(rs.getString("name_user"));
+            user.setPhoneNumber(rs.getString("phone_number"));
+            user.setStatus(Integer.valueOf(rs.getString("status")));
+            users.add(user);
         }
+        return users;
     }
 
 //    public Card getCardByUserName(String userName) throws SQLException {
