@@ -82,6 +82,49 @@ public class UserDao {
             return 2;
         }
     }
+    
+    public User drawMoney(int id, int money) throws SQLException {
+        
+        PreparedStatement preparedStatement;
+        String sql;
+        
+        Connection con = Connect.getJDBCConection();
+
+        sql = "UPDATE user SET so_du = ? WHERE id_user = ?";
+
+        preparedStatement = con.prepareStatement(sql);
+
+        preparedStatement.setInt(1, money);
+        preparedStatement.setInt(2, id);
+
+        int rs = preparedStatement.executeUpdate();
+
+        if(rs == 1) {
+            //lấy lại thông tin user
+            sql = "SELECT * FROM user WHERE id_user = ?";
+
+            preparedStatement = con.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs1 = preparedStatement.executeQuery();
+
+            User user = new User();
+            rs1.next();
+            user.setId(rs1.getInt("id_user"));
+            user.setName(rs1.getString("name_user"));
+            user.setDoB(rs1.getString("DoB"));
+            user.setCmnd(rs1.getString("cmnd"));
+            user.setPhoneNumber(rs1.getString("phone_number"));
+            user.setAddress(rs1.getString("address"));
+            user.setRole(rs1.getInt("role"));
+            user.setStatus(rs1.getInt("status"));
+            user.setSoDu(rs1.getInt("so_du"));
+            return user;
+        } else {
+            return null;
+        }
+    }
 
 //    public Card getCardByUserName(String userName) throws SQLException {
 //        Card card = new Card();

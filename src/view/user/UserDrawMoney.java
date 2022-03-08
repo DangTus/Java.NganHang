@@ -7,19 +7,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
+import service.UserService;
 import view.HomePage;
 import view.Login;
 
 public class UserDrawMoney extends javax.swing.JFrame {
 
     User user = null;
+    UserService userService = null;
 
     public UserDrawMoney(User user) {
 
         this.user = user;
+        userService = new UserService();
 
         initComponents();
-        
+
         //hiển thị số dư
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat vn = NumberFormat.getInstance(localeVN);
@@ -150,12 +153,26 @@ public class UserDrawMoney extends javax.swing.JFrame {
 
     private void rutTienButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rutTienButtonActionPerformed
         // TODO add your handling code here:
-        if(soTienRutTF.getText().equals("")) {
+        if (soTienRutTF.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền muốn rút", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } else if(Integer.valueOf(soTienRutTF.getText()) <= 0) {
+        } else if (Integer.valueOf(soTienRutTF.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền muốn rút lớn hơn 0", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else if (Integer.valueOf(soTienRutTF.getText()) > user.getSoDu()) {
+            JOptionPane.showMessageDialog(this, "Không đủ tiền để rút", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
-            
+            int money = user.getSoDu() - Integer.valueOf(soTienRutTF.getText());
+            try {
+                this.user = userService.drawMoney(user.getId(), money);
+                if (user == null) {
+                    JOptionPane.showMessageDialog(this, "Rút tiền không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Rút tiền thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
+                }
+                new HomePage(user).setVisible(true);
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDrawMoney.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_rutTienButtonActionPerformed
 
