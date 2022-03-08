@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
-import view.user.HomePage;
 
 public class Login extends javax.swing.JFrame {
 
@@ -104,7 +103,7 @@ public class Login extends javax.swing.JFrame {
             user = userService.login(userNameTextField.getText(), String.valueOf(passwotdTextField.getPassword()));
             if (user == null) {
                 JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại", "ERROR", JOptionPane.ERROR_MESSAGE);
-            } else if (user.getPassword() == "") {
+            } else if (user.getId() == 0) {
                 JOptionPane.showMessageDialog(this, "Sai mật khẩu", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (user.getStatus() == 0) {
                 JOptionPane.showMessageDialog(this, "Tài khoản của bạn đã bị khóa", "ERROR", JOptionPane.ERROR_MESSAGE);

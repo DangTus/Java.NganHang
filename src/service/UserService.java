@@ -15,6 +15,10 @@ public class UserService {
     public User login(String userName, String password) throws SQLException {
         return userDao.login(userName, password);
     }
+    
+    public int editPassword(int id, String passwordOld, String passwordNew, String passwordConfirm) throws SQLException {
+        return userDao.editPassword(id, passwordOld, passwordNew, passwordConfirm);
+    }
 
 //    public Card getCardByUserName(String userName) throws SQLException {
 //

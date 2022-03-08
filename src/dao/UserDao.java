@@ -25,7 +25,7 @@ public class UserDao {
 
         if (rs.next()) {
             user = new User();
-            if(password.equals(rs.getString("password"))) {                
+            if (password.equals(rs.getString("password"))) {
                 user.setId(rs.getInt("id_user"));
                 user.setName(rs.getString("name_user"));
                 user.setDoB(rs.getString("DoB"));
@@ -36,11 +36,50 @@ public class UserDao {
                 user.setStatus(rs.getInt("status"));
                 user.setSoDu(rs.getInt("so_du"));
             } else {
-                user.setPassword("");
-            }            
-            return user;    
+                user.setId(0);
+            }
+            return user;
         } else {
             return null;
+        }
+    }
+
+    // 1: thanh cong
+    // 2: mat khau cu sai
+    // 3: mat khau xac nhan k trung voi mat khau moi
+    public int editPassword(int id, String passwordOld, String passwordNew, String passwordConfirm) throws SQLException {
+
+        PreparedStatement preparedStatement;
+        String sql;
+
+        Connection con = Connect.getJDBCConection();
+
+        sql = "SELECT * FROM user WHERE id_user = ? AND password = ?";
+
+        preparedStatement = con.prepareStatement(sql);
+
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, passwordOld);
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        if (rs.next()) {
+            if (passwordNew.equals(passwordConfirm)) {
+                sql = "UPDATE user SET password = ? WHERE id_user = ?";
+
+                preparedStatement = con.prepareStatement(sql);
+
+                preparedStatement.setString(1, passwordNew);
+                preparedStatement.setInt(2, id);
+
+                int rs1 = preparedStatement.executeUpdate();
+
+                return rs1;
+            } else {
+                return 3;
+            }
+        } else {
+            return 2;
         }
     }
 
