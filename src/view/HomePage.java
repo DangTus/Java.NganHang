@@ -27,15 +27,15 @@ public class HomePage extends javax.swing.JFrame {
         initComponents();
         //hiển thị tên
         if (user.getRole() == 2) {
-            roleLabel.setText("Xin chào người dùng");
+            roleLabel.setText("Xin chào người dùng".toUpperCase());
             qlUserBT.setVisible(false);
         } else if (user.getRole() == 1) {
-            roleLabel.setText("Xin chào quản trị");
+            roleLabel.setText("Xin chào quản trị".toUpperCase());
             rutTienButton.setVisible(false);
             soDuTF.setVisible(false);
             soDuL.setVisible(false);
         }
-        nameLabel.setText(user.getName());
+        nameLabel.setText(user.getName().toUpperCase());
         //hiển thị số dư
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat vn = NumberFormat.getInstance(localeVN);
@@ -69,7 +69,7 @@ public class HomePage extends javax.swing.JFrame {
 
         roleLabel.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         roleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        roleLabel.setText(" Xin chào quản trị");
+        roleLabel.setText("XIN CHÀO QUẢN TRỊ");
 
         soDuL.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         soDuL.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -106,7 +106,7 @@ public class HomePage extends javax.swing.JFrame {
         nameLabel.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(255, 51, 51));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setText("Tus");
+        nameLabel.setText("TUS");
 
         qlUserBT.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         qlUserBT.setText("Quản lí người dùng");
@@ -148,7 +148,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(roleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameLabel)

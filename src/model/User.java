@@ -12,7 +12,7 @@ public class User {
     private String userName;
     private String password;
     private int status;
-    private int soDu;
+    private long soDu;
 
     public int getId() {
         return id;
@@ -94,11 +94,13 @@ public class User {
         this.status = status;
     }
 
-    public int getSoDu() {
+    public long getSoDu() {
         return soDu;
     }
 
-    public void setSoDu(int soDu) {
+    public void setSoDu(long soDu) {
         this.soDu = soDu;
     }
+
+    
 }

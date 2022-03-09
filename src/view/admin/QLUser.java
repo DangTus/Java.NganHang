@@ -35,6 +35,7 @@ public class QLUser extends javax.swing.JFrame {
         defaultTableModel.addColumn("Id");
         defaultTableModel.addColumn("Tên người dùng");
         defaultTableModel.addColumn("Số điện thoại");
+        defaultTableModel.addColumn("Số dư");
         defaultTableModel.addColumn("Trạng thái");
         // Đổ dữ liệu vào bảng
         setTableData(userService.getAllUser());
@@ -45,7 +46,7 @@ public class QLUser extends javax.swing.JFrame {
         for (User user : users) {
             String trangThai = user.getStatus() == 1 ? "Mở" : "Khóa";
             defaultTableModel.addRow(new Object[]{user.getId(), user.getName(),
-                user.getPhoneNumber(), trangThai});
+                user.getPhoneNumber(), user.getSoDu(), trangThai});
         }
     }
 
@@ -199,32 +200,30 @@ public class QLUser extends javax.swing.JFrame {
 
     private void deleteBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTActionPerformed
         // TODO add your handling code here:
-//        int row = userTable.getSelectedRow(); //Xác định hàng mà mình đã chọn
-//        if (row == -1) {
-//            JOptionPane.showMessageDialog(this, "Chọn tài liệu cần xóa trước đi bạn ei", "Lỗi rồi bạn ei", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION); //Xác nhận xóa
-//
-//            if (confirm == 0) {
-//                int id = Integer.valueOf(String.valueOf(userTable.getValueAt(row, 0)));
-//                try {
-//                    int rs = documentService.deleteDocument(id);
-//                    defaultTableModel.setRowCount(0); // reset dữ liệu về 0
-//                    showTableData(0); // Gọi hàm đổ dữ liệu vào bảng
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DocumentView.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ClassNotFoundException ex) {
-//                    Logger.getLogger(DocumentView.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//            }
-//        }
+        int row = userTable.getSelectedRow(); //Xác định hàng mà mình đã chọn
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Chọn người dùng cần xóa trước đi bạn ei", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION); //Xác nhận xóa
+
+            if (confirm == 0) {
+                int id = Integer.valueOf(String.valueOf(userTable.getValueAt(row, 0)));
+                try {
+                    int rs = userService.deleteUser(id);
+                    
+                    defaultTableModel.setRowCount(0); // reset dữ liệu về 0
+                    setTableData(userService.getAllUser()); // Gọi hàm đổ dữ liệu vào bảng
+                } catch (SQLException ex) {
+                    Logger.getLogger(QLUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }//GEN-LAST:event_deleteBTActionPerformed
 
     private void addBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBTActionPerformed
         // TODO add your handling code here:
-//        new DocumentAdd().setVisible(true); // Chuyển qua trang add
-//        this.dispose(); // Đóng trang hiện tại
+        new UserAdd(user).setVisible(true); // Chuyển qua trang add
+        this.dispose(); // Đóng trang hiện tại
     }//GEN-LAST:event_addBTActionPerformed
 
     private void refreshBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBTActionPerformed
@@ -251,6 +250,16 @@ public class QLUser extends javax.swing.JFrame {
 
     private void drawMoneyBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawMoneyBTActionPerformed
         // TODO add your handling code here:
+        int row = userTable.getSelectedRow(); //Xác định hàng mà mình đã chọn
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Chọn người dùng cần rút tiền trước đi bạn ei", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int id = Integer.valueOf(String.valueOf(userTable.getValueAt(row, 0)));
+            int soDu = Integer.valueOf(String.valueOf(userTable.getValueAt(row, 3)));
+            
+            new AdminDrawMoneyUser(user, id, soDu).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_drawMoneyBTActionPerformed
 
     /**

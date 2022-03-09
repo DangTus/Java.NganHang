@@ -65,7 +65,7 @@ public class UserInformation extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Thông tin người dùng");
+        jLabel1.setText("THÔNG TIN");
 
         DoBTF.setEditable(false);
         DoBTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N

@@ -32,24 +32,24 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Đăng nhập");
+        jLabel1.setText("ĐĂNG NHẬP");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Username");
+        jLabel2.setText("Tài khoản");
 
         userNameTextField.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         userNameTextField.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Password");
+        jLabel3.setText("Mật khẩu");
 
         passwotdTextField.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         passwotdTextField.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         loginButton.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        loginButton.setText("Login");
+        loginButton.setText("Đăng nhập");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);

@@ -137,7 +137,7 @@
           <Font name="Tahoma" size="20" style="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Th&#xf4;ng tin ng&#x1b0;&#x1edd;i d&#xf9;ng"/>
+        <Property name="text" type="java.lang.String" value="TH&#xd4;NG TIN"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="DoBTF">

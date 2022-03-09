@@ -1,33 +1,31 @@
-package view.user;
+package view.admin;
 
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
-import view.HomePage;
 import view.Login;
 
-public class UserDrawMoney extends javax.swing.JFrame {
+public class AdminDrawMoneyUser extends javax.swing.JFrame {
 
-    User user = null;
+    User userAdmin = null;
     UserService userService = null;
+    int id = 0;
+    long soDu = 0;
 
-    public UserDrawMoney(User user) {
+    public AdminDrawMoneyUser(User userAdmin, int id, long soDu) {
 
-        this.user = user;
+        this.userAdmin = userAdmin;
+        this.id = id;
+        this.soDu = soDu;
         userService = new UserService();
 
         initComponents();
-
-        //hiển thị số dư
-        Locale localeVN = new Locale("vi", "VN");
-        NumberFormat vn = NumberFormat.getInstance(localeVN);
-        String soDu = vn.format(user.getSoDu());
-        soDuTF.setText(soDu + " VNĐ");
+        
+        //hiện số dư
+        soDuTF.setText(String.valueOf(soDu));
     }
 
     /**
@@ -39,28 +37,16 @@ public class UserDrawMoney extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel7 = new javax.swing.JLabel();
-        rutTienButton = new javax.swing.JButton();
         soDuTF = new javax.swing.JTextField();
         backBT = new javax.swing.JButton();
         roleLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         soTienRutTF = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        rutTienButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Số dư hiện tại");
-
-        rutTienButton.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        rutTienButton.setText("Rút tiền");
-        rutTienButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rutTienButtonActionPerformed(evt);
-            }
-        });
 
         soDuTF.setEditable(false);
         soDuTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -90,6 +76,18 @@ public class UserDrawMoney extends javax.swing.JFrame {
         soTienRutTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         soTienRutTF.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Số dư hiện tại");
+
+        rutTienButton.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        rutTienButton.setText("Rút tiền");
+        rutTienButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rutTienButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,7 +99,7 @@ public class UserDrawMoney extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -136,7 +134,7 @@ public class UserDrawMoney extends javax.swing.JFrame {
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(rutTienButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -145,10 +143,10 @@ public class UserDrawMoney extends javax.swing.JFrame {
     private void backBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBTActionPerformed
         // TODO add your handling code here:
         try {
-            new HomePage(user).setVisible(true);
+            new QLUser(userAdmin).setVisible(true);
             this.dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDrawMoney.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_backBTActionPerformed
 
@@ -158,22 +156,22 @@ public class UserDrawMoney extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền muốn rút", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else if (Integer.valueOf(soTienRutTF.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền muốn rút lớn hơn 0", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } else if (Integer.valueOf(soTienRutTF.getText()) > user.getSoDu()) {
+        } else if (Integer.valueOf(soTienRutTF.getText()) > soDu) {
             JOptionPane.showMessageDialog(this, "Không đủ tiền để rút", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
-            long money = user.getSoDu() - Integer.valueOf(soTienRutTF.getText());
+            long money = soDu - Integer.valueOf(soTienRutTF.getText());
+
             try {
-                int rs = userService.drawMoney(user.getId(), money);
+                int rs = userService.drawMoney(id, money);
                 if (rs != 1) {
                     JOptionPane.showMessageDialog(this, "Rút tiền không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Rút tiền thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
-                    user.setSoDu(money);
                 }
-                new HomePage(user).setVisible(true);
+                new QLUser(userAdmin).setVisible(true);
                 this.dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(UserDrawMoney.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_rutTienButtonActionPerformed
@@ -195,13 +193,13 @@ public class UserDrawMoney extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserDrawMoney.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserDrawMoney.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserDrawMoney.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserDrawMoney.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDrawMoneyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

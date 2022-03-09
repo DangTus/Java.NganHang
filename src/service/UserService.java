@@ -21,7 +21,7 @@ public class UserService {
         return userDao.editPassword(id, passwordOld, passwordNew, passwordConfirm);
     }
 
-    public int drawMoney(int id, int money) throws SQLException {
+    public int drawMoney(int id, long money) throws SQLException {
         return userDao.drawMoney(id, money);
     }
 
@@ -35,6 +35,14 @@ public class UserService {
 
     public int updateUserById(User user) throws SQLException {
         return userDao.updateUserById(user);
+    }
+    
+    public int addUser(User user) throws SQLException {
+        return userDao.addUser(user);
+    }
+    
+    public int deleteUser(int id) throws SQLException {
+        return userDao.deleteUser(id);
     }
 
 //    public Card getCardByUserName(String userName) throws SQLException {
