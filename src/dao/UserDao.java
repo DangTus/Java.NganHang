@@ -47,8 +47,8 @@ public class UserDao {
     }
 
     // 1: thanh cong
-    // 2: mat khau cu sai
-    // 3: mat khau xac nhan k trung voi mat khau moi
+    // -1: mat khau cu sai
+    // -2: mat khau xac nhan k trung voi mat khau moi
     public int editPassword(int id, String passwordOld, String passwordNew, String passwordConfirm) throws SQLException {
 
         PreparedStatement preparedStatement;
@@ -78,10 +78,10 @@ public class UserDao {
 
                 return rs1;
             } else {
-                return 3;
+                return -2;
             }
         } else {
-            return 2;
+            return -1;
         }
     }
 
@@ -116,10 +116,64 @@ public class UserDao {
             user.setId(rs.getInt("id_user"));
             user.setName(rs.getString("name_user"));
             user.setPhoneNumber(rs.getString("phone_number"));
-            user.setStatus(Integer.valueOf(rs.getString("status")));
+            user.setStatus(rs.getInt("status"));
             users.add(user);
         }
         return users;
+    }
+    
+    public User getUserById(int id) throws SQLException {
+        User user = new User();
+
+        Connection con = Connect.getJDBCConection();
+
+        String sql = "SELECT * FROM user WHERE id_user = ?";
+
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        
+        preparedStatement.setInt(1, id);
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        rs.next();
+        user.setId(rs.getInt("id_user"));
+        user.setName(rs.getString("name_user"));
+        user.setDoB(rs.getString("DoB"));
+        user.setCmnd(rs.getString("cmnd"));
+        user.setPhoneNumber(rs.getString("phone_number"));
+        user.setAddress(rs.getString("address"));
+        user.setUserName(rs.getString("user_name"));
+        user.setPassword(rs.getString("password"));
+        user.setStatus(rs.getInt("status"));
+        user.setSoDu(rs.getInt("so_du"));
+        
+        return user;
+    }
+    
+    public int updateUserById(User user) throws SQLException {
+        Connection con = Connect.getJDBCConection();
+
+        String sql = "UPDATE user"
+                + " SET name_user = ?, DoB = ?, cmnd = ?, phone_number = ?, address = ?, user_name = ?"
+                + ", password = ?, status = ?, so_du = ?"
+                + " WHERE id_user = ?";
+
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        
+        preparedStatement.setString(1, user.getName());
+        preparedStatement.setString(2, user.getDoB());
+        preparedStatement.setString(3, user.getCmnd());
+        preparedStatement.setString(4, user.getPhoneNumber());
+        preparedStatement.setString(5, user.getAddress());
+        preparedStatement.setString(6, user.getUserName());
+        preparedStatement.setString(7, user.getPassword());
+        preparedStatement.setInt(8, user.getStatus());
+        preparedStatement.setInt(9, user.getSoDu());
+        preparedStatement.setInt(10, user.getId());
+
+        int rs = preparedStatement.executeUpdate();
+
+        return rs;
     }
 
 //    public Card getCardByUserName(String userName) throws SQLException {

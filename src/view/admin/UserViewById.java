@@ -1,49 +1,71 @@
 package view.admin;
 
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.User;
+import service.UserService;
 import view.Login;
 
 public class UserViewById extends javax.swing.JFrame {
-    
-    User userAdmin = null;
-    User user = null;
 
-    public UserViewById(int id, User userAdmin) {
-        
+    User userAdmin = null, user = null;
+    UserService userService = null;
+
+    public UserViewById(int id, User userAdmin) throws SQLException {
+
         this.userAdmin = userAdmin;
-        
+        userService = new UserService();
+
         initComponents();
-        
+
         editButton.setVisible(false);
+
+        //Đổ dữ liệu vào
+        user = userService.getUserById(id);
+
+        idTF.setText(String.valueOf(user.getId()));
+        nameTF.setText(user.getName());
+        DoBTF.setText(user.getDoB());
+        cmndTF.setText(user.getCmnd());
+        phoneTF.setText(user.getPhoneNumber());
+        addressTF.setText(user.getAddress());
+        userNameTF.setText(user.getUserName());
+        passwordTF.setText(user.getPassword());
+        soDuTF.setText(String.valueOf(user.getSoDu()));
+        //trạng thái
+        statusCB.addItem("Mở");
+        statusCB.addItem("Khóa");
+        statusCB.setSelectedItem(user.getStatus() == 1 ? "Mở" : "Khóa");
     }
-    
+
     public void unhidden() {
         nameTF.setEditable(true);
         nameTF.setEnabled(true);
-        
+
         DoBTF.setEditable(true);
         DoBTF.setEnabled(true);
-        
+
         cmndTF.setEditable(true);
         cmndTF.setEnabled(true);
-        
+
         phoneTF.setEditable(true);
         phoneTF.setEnabled(true);
-        
+
         addressTF.setEditable(true);
         addressTF.setEnabled(true);
-        
+
         userNameTF.setEditable(true);
         userNameTF.setEnabled(true);
-        
+
         passwordTF.setEditable(true);
         passwordTF.setEnabled(true);
 
-        roleCB.setEnabled(true);
-        
+        statusCB.setEnabled(true);
+
         soDuTF.setEditable(true);
         soDuTF.setEnabled(true);
     }
@@ -76,11 +98,11 @@ public class UserViewById extends javax.swing.JFrame {
         nameTF = new javax.swing.JTextField();
         editButton = new javax.swing.JButton();
         editViewButton = new javax.swing.JButton();
-        roleCB = new javax.swing.JComboBox<>();
+        statusCB = new javax.swing.JComboBox<>();
         cmndTF = new javax.swing.JTextField();
         userNameTF = new javax.swing.JTextField();
-        soDuTF = new javax.swing.JTextField();
         passwordTF = new javax.swing.JPasswordField();
+        soDuTF = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -177,8 +199,8 @@ public class UserViewById extends javax.swing.JFrame {
             }
         });
 
-        roleCB.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        roleCB.setEnabled(false);
+        statusCB.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        statusCB.setEnabled(false);
 
         cmndTF.setEditable(false);
         cmndTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -190,14 +212,14 @@ public class UserViewById extends javax.swing.JFrame {
         userNameTF.setEnabled(false);
         userNameTF.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        soDuTF.setEditable(false);
-        soDuTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        soDuTF.setEnabled(false);
-        soDuTF.setMargin(new java.awt.Insets(2, 5, 2, 5));
-
         passwordTF.setEditable(false);
         passwordTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         passwordTF.setEnabled(false);
+
+        soDuTF.setEditable(false);
+        soDuTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        soDuTF.setEnabled(false);
+        soDuTF.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,22 +260,22 @@ public class UserViewById extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(userNameTF))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(soDuTF))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(roleCB, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(passwordTF)))))
+                                    .addComponent(passwordTF)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(soDuTF))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -306,18 +328,19 @@ public class UserViewById extends javax.swing.JFrame {
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(roleCB, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(soDuTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(passwordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(editViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(passwordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(soDuTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         pack();
@@ -325,83 +348,53 @@ public class UserViewById extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        try {            
+        try {
             new QLUser(userAdmin).setVisible(true);
             this.dispose();
         } catch (SQLException ex) {
             Logger.getLogger(UserViewById.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
-//        if (tenTLTextField.getText().equals("") || tenNXBTextField.getText().equals("") || soLuongTextField.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin", "Lỗi rồi bạn ei", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            switch (id_loai) {
-//                case 1:
-//                book = new Book();
-//                book.setId(Integer.valueOf(maTLTextField.getText()));
-//                book.setTenTaiLieu(tenTLTextField.getText());
-//                book.setTenNXB(tenNXBTextField.getText());
-//                book.setSoLuong(Integer.valueOf(soLuongTextField.getText()));
-//                book.setTenTacGia(tenTGTextField.getText());
-//                book.setSoTrang(Integer.valueOf(trangTextField.getText()));
-//                try {
-//                    documentUpdateService = new DocumentUpdateService(book);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DocumentAdd.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//
-//                case 2:
-//                News news = new News();
-//                news.setId(Integer.valueOf(maTLTextField.getText()));
-//                news.setTenTaiLieu(tenTLTextField.getText());
-//                news.setTenNXB(tenNXBTextField.getText());
-//                news.setSoLuong(Integer.valueOf(soLuongTextField.getText()));
-//                news.setNgayPhatHanh(ngayPhatHanhTextField.getText());
-//                try {
-//                    documentUpdateService = new DocumentUpdateService(news);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DocumentAdd.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//
-//                case 3:
-//                Magazines magazines = new Magazines();
-//                magazines.setId(Integer.valueOf(maTLTextField.getText()));
-//                magazines.setTenTaiLieu(tenTLTextField.getText());
-//                magazines.setTenNXB(tenNXBTextField.getText());
-//                magazines.setSoLuong(Integer.valueOf(soLuongTextField.getText()));
-//                magazines.setSoPhatHanh(soPhatHanhTextField.getText());
-//                magazines.setThangPhatHanh(Integer.valueOf(thangPhatHanhTextField.getText()));
-//                magazines.setNamPhatHanh(Integer.valueOf(namPhatHanhTextField.getText()));
-//                try {
-//                    documentUpdateService = new DocumentUpdateService(magazines);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DocumentAdd.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                break;
-//            }
-//            if (documentUpdateService.getRs() == 1) {
-//                JOptionPane.showMessageDialog(this, "Sửa thông tin thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
-//                try {
-//                    new DocumentView().setVisible(true);
-//                    this.dispose();
-//                } catch (ClassNotFoundException ex) {
-//                    Logger.getLogger(DocumentAdd.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DocumentAdd.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }
+        if (nameTF.getText().equals("") || userNameTF.getText().equals("") || passwordTF.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            user = new User();
+
+            user.setId(Integer.valueOf(idTF.getText()));
+            user.setName(nameTF.getText());
+            user.setDoB(DoBTF.getText());
+            user.setCmnd(cmndTF.getText());
+            user.setPhoneNumber(phoneTF.getText());
+            user.setAddress(addressTF.getText());
+            user.setUserName(userNameTF.getText());
+            user.setPassword(String.valueOf(passwordTF.getPassword()));
+            user.setSoDu(Integer.valueOf(soDuTF.getText()));
+            //set trạng thái
+            int status = statusCB.getSelectedItem().toString() == "Mở" ? 1 : 0;
+            user.setStatus(status);
+
+            try {
+                int rs = userService.updateUserById(user);
+                if (rs == 1) {
+                    JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
+                }
+                new QLUser(userAdmin).setVisible(true);
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserViewById.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void editViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editViewButtonActionPerformed
         // TODO add your handling code here:
         editButton.setVisible(true);
-        editViewButton.setVisible(false);        
+        editViewButton.setVisible(false);
         unhidden();
     }//GEN-LAST:event_editViewButtonActionPerformed
 
@@ -462,8 +455,8 @@ public class UserViewById extends javax.swing.JFrame {
     private javax.swing.JTextField nameTF;
     private javax.swing.JPasswordField passwordTF;
     private javax.swing.JTextField phoneTF;
-    private javax.swing.JComboBox<String> roleCB;
-    private javax.swing.JTextField soDuTF;
+    private javax.swing.JFormattedTextField soDuTF;
+    private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JTextField userNameTF;
     // End of variables declaration//GEN-END:variables
 }

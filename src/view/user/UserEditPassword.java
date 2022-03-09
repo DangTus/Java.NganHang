@@ -156,9 +156,9 @@ public class UserEditPassword extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
                 new HomePage(user).setVisible(true);
                 this.dispose();
-            } else if (rs == 2) {
+            } else if (rs == -1) {
                 JOptionPane.showMessageDialog(this, "Mật khẩu cũ sai", "ERROR", JOptionPane.ERROR_MESSAGE);
-            } else if (rs == 3) {
+            } else if (rs == -2) {
                 JOptionPane.showMessageDialog(this, "Mật khẩu xác nhận không giống với mật khẩu mới", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {

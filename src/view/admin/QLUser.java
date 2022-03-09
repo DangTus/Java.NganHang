@@ -188,10 +188,12 @@ public class QLUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Chọn người dùng cần xem trước đi bạn ei", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
             int id = Integer.valueOf(String.valueOf(userTable.getValueAt(row, 0)));
-
-            new UserViewById(id, user).setVisible(true); // Chuyển qua trang xem
-            this.dispose(); // Đóng trang hiện tại
-            
+            try {
+                new UserViewById(id, user).setVisible(true); // Chuyển qua trang xem
+                this.dispose(); // Đóng trang hiện tại
+            } catch (SQLException ex) {
+                Logger.getLogger(QLUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_viewBTActionPerformed
 
